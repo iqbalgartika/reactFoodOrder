@@ -29,8 +29,8 @@ const cartReducer = (state, action) => {
     newItems[itemIdx].amount--;
     const price = newItems[itemIdx].price;
 
-    if(newItems[itemIdx].amount <= 0) {
-        newItems.splice(itemIdx,1);
+    if (newItems[itemIdx].amount <= 0) {
+      newItems.splice(itemIdx, 1);
     }
 
     return {
@@ -51,11 +51,15 @@ const CartProvider = (props) => {
   const removeItemHandler = (id) => {
     dispatchState({ type: "REMOVE", id: id });
   };
+  const clearItemsHandler = () => {
+    dispatchState({ type: "CLEAR" });
+  };
 
   const cartContext = {
     ...cartState,
     addItem: addItemHandler,
     removeItem: removeItemHandler,
+    clearItems: clearItemsHandler
   };
 
   return (
