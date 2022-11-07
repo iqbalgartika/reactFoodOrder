@@ -14,20 +14,24 @@ const Cart = (props) => {
   const submitHandler = async (userData) => {
     try {
       setIsSubmitting(true);
-      const res = await fetch(
-        "https://movies-b1f65-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            userData,
-            meals: ctx.items,
-          }),
-        }
-      );
-      
+      const res = await fetch("http://localhost:9000/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userData,
+          meals: ctx.items,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Something went wrong");
+      }
+
       const data = await res.json();
-      console.log(data)
-     
+      console.log(data);
+
       setIsSubmitting(false);
       setResult("Meals ordered!");
       ctx.clearItems();

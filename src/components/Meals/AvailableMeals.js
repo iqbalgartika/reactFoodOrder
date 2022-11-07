@@ -11,22 +11,12 @@ const AvailableMeals = (props) => {
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const res = await fetch(
-          "https://movies-b1f65-default-rtdb.asia-southeast1.firebasedatabase.app/meals.json"
-        );
-        const data = await res.json();
-
-        const fetchedMeals = [];
-        for (const key in data) {
-          if (Object.hasOwnProperty.call(data, key)) {
-            fetchedMeals.push({
-              id: key,
-              ...data[key],
-            });
-          }
+        const res = await fetch("http://localhost:9000/meals");
+        if (!res.ok) {
+          throw new Error("Something went wrong");
         }
-
-        setMeals(fetchedMeals);
+        const data = await res.json();
+        setMeals(data);
       } catch (err) {
         setError(err.message);
       }
@@ -36,7 +26,7 @@ const AvailableMeals = (props) => {
     fetchMeals();
   }, []);
 
-  let content = <p className={classes['meals-loading']}>No meals found</p>;
+  let content = <p className={classes["meals-loading"]}>No meals found</p>;
   if (meals.length > 0) {
     content = (
       <div className={classes.meals}>
@@ -51,10 +41,10 @@ const AvailableMeals = (props) => {
     );
   }
   if (error) {
-    content = <p className={classes['meals-error']}>{error}</p>;
+    content = <p className={classes["meals-error"]}>{error}</p>;
   }
   if (isLoading) {
-    content = <p className={classes['meals-loading']}>Loading...</p>;
+    content = <p className={classes["meals-loading"]}>Loading...</p>;
   }
 
   return content;
